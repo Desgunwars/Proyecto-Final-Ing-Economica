@@ -1,11 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 
+from alerta import Alert
 from LogicaAmortizacion import TableAmortizacion
+from LogicaCapitalizacion import TablaCapitalizacion
+from subventanas import ValorPresente
 
-class Aplication:
-    
+class Aplication():
+
     def __init__(self):
+        super().__init__()
         # Config Main Window GUI
         self.window1 = tk.Tk()
         self.window1.title("Ingenieria economica")
@@ -15,7 +19,7 @@ class Aplication:
         
         self.wrapper = tk.LabelFrame(self.window1, text = "Opciones de Simulacion")
         self.wrapper1 = tk.LabelFrame(self.window1, text = "Simulacion")
-        self.wrapper2 = tk.LabelFrame(self.window1, text = "Ver Valores")
+        self.wrapper2 = tk.LabelFrame(self.window1, text = "Calculos Adicionales")
         
         # Combobox 
         self.labelValueStart = tk.Label(self.wrapper, text = "Seleccione Opcion de Simualacion")        
@@ -43,7 +47,7 @@ class Aplication:
         self.EntryTasaInteres = tk.Entry(self.wrapper, width = 35, bd = 5, state = "disabled", textvariable = self.tasa)
         
         # Button  Simulation
-        self.calcular = tk.Button(self.wrapper, text = "Generar Simulacion", state = "disabled" ,command = self.generarSimulacion)
+        self.calcular = tk.Button(self.wrapper, text = "Generar Simulacion", state = "disabled" ,command = self.decidir)
         self.atras = tk.Button(self.wrapper, text = "Cerrar" ,command = self.cancelar)
         
         # Format tabl
@@ -56,49 +60,59 @@ class Aplication:
         self.table.heading("Saldo", text = "Saldo", anchor = "center")
         
         # Tamaño de las columnas
-        self.table.column("n", width = "80", stretch = False)
-        self.table.column("Cuota", width = "100",  stretch = False)
-        self.table.column("Interes", width = "100",  stretch = False)
-        self.table.column("Acumulado", width = "100",  stretch = False)
-        self.table.column("Saldo", width = "100", stretch = False)
+        self.table.column("n", width = "100", stretch = False)
+        self.table.column("Cuota", width = "130",  stretch = False)
+        self.table.column("Interes", width = "130",  stretch = False)
+        self.table.column("Acumulado", width = "130",  stretch = False)
+        self.table.column("Saldo", width = "130", stretch = False)
         
         # Ver Valores Finales
-        self.valorPresente = tk.Label(self.wrapper2, text = "> El Valor presete es: ")
-        self.valorFinal = tk.Label(self.wrapper2, text = "> El Valor Final es: ")
-        self.gradiente = tk.Label(self.wrapper2, text = "> El gradiente es es: ")
+        self.valorPresente = tk.Button(self.wrapper2, text = "> Calcular Valor Presente" , width = 20, command = self.llamado)
+        self.valorFinal = tk.Button(self.wrapper2, text = "> Calcular Valor Final", width = 20)
+        self.Caltasa = tk.Button(self.wrapper2, text = "> Calcular Tasa de Interes", width = 20)
+        self.numeroPeriodos = tk.Button(self.wrapper2, text = "> Calcular Numero de Periodos", width = 25)
+        self.gradienteCreciente = tk.Button(self.wrapper2, text = "> Calcular Gradiente Creciente", width = 25)
+        self.gradienteDecreciente = tk.Button(self.wrapper2, text = "> Calcular Gradiente Decreciente", width = 25)
+        self.vpresenteAnualidadV = tk.Button(self.wrapper2, text = "> Calcular Valor Presente Anualidad Vencida", width = 35, justify = "center")
+        self.vfinalAnualidadV = tk.Button(self.wrapper2, text = "> Calcular Valor Final Anualidad Vencida", width = 35,  justify = "left")
+        self.interesGAnualidad = tk.Button(self.wrapper2, text = "> Calcular Anualidad Vencida Interes Global", width = 35)
 
         # Posicition and Config dimension LabelFrame
         self.wrapper.pack(padx = 10, pady = 5, fill = "both")
         self.wrapper1.pack(padx = 10, pady = 5, fill = "both")
-        self.wrapper2.pack(padx = 10, pady = 5, fill = "both")
+        self.wrapper2.pack(padx = 10, pady = 3, fill = "both")
         
         # Grid Defination 
         # Grid Position label for form 
         self.labelValueStart.grid(column = 0, row = 0)
         self.Nperiodos.grid(column = 0 , row = 1)
         self.valorCuota.grid(column = 0 , row = 2)
-        # self.valorPresnete.grid(column = 0, row = 3)
         self.tasaInteres.grid(column = 0, row = 4)
-        self.valorPresente.grid(column = 0, row =6)
-        self.valorFinal.grid(column = 0, row = 7)
-        self.gradiente.grid(column = 0, row = 8)
         
         # Grid Position Entry for form
         self.menuoption.grid(column = 1, row = 0, padx = 10, pady = 5 )
         self.EntryNperiodos.grid(column = 1, row = 1 , padx = 3, pady = 5)
         self.EntryvalorCuota.grid(column = 1, row = 2, padx = 3, pady = 5)
-        # self.EntryValorPresente.grid(column = 1, row = 3, padx = 3, pady = 5)
         self.EntryTasaInteres.grid(column = 1, row = 4, padx = 3, pady = 5)
         
         # Grid position button
         self.calcular.grid(column = 0, row = 5 ,padx = 3, pady = 5)
         self.atras.grid(column = 1, row = 5, padx = 3, pady = 5)
+        self.valorPresente.grid(column = 0, row =6, padx = 5, pady = 5)
+        self.valorFinal.grid(column = 0, row = 7, padx = 5, pady = 5)
+        self.Caltasa.grid(column = 0, row = 8, padx = 5, pady = 5)
+        self.numeroPeriodos.grid(column = 1, row = 6, padx = 5, pady = 5)
+        self.gradienteCreciente.grid(column = 1, row = 8, padx = 5, pady = 5)
+        self.gradienteDecreciente.grid(column = 1, row = 7, padx = 5, pady = 5)
+        self.vpresenteAnualidadV.grid(column = 2, row = 6, padx = 5, pady = 5)
+        self.vfinalAnualidadV.grid(column = 2, row = 7, padx = 5, pady = 5)
+        self.interesGAnualidad.grid(column = 2, row = 8, padx = 5, pady = 5)
         
         # Grid Position Formad table
         self.table.grid(column =0 , columnspan = 2,row = 6, padx = 5, pady = 5)
+        
         self.window1.mainloop()
-        
-        
+    # Valida que la persona seleccionara alguna de las opciones de capitalizacio    
     def opcionMenu(self,*args):
         if self.Cliketd.get() == "Seleccione la Opcion de Simualacion":
             self.EntryNperiodos.config(state = 'disabled')
@@ -110,28 +124,48 @@ class Aplication:
             self.EntryvalorCuota.config(state = 'normal')
             self.EntryTasaInteres.config(state = 'normal')
             self.calcular.config(state = 'normal')
-            if self.Cliketd.get() == "Simulacion por Amortizacion":
-                self.generarSimulacion
+            # Valia la Opcion de Simulacion, para cambiar el contanido del label
+            if self.Cliketd.get() == "Simulacion por Capitalizacion":
+                self.valorCuota['text'] = "Ingrese el Valor Final: "
             else:
-                self.EntryNperiodos.config(state = 'disabled')
-                self.EntryvalorCuota.config(state = 'disabled')
-                self.EntryTasaInteres.config(state = 'disabled')
-                self.calcular.config(state = 'disabled')
-
+                self.valorCuota['text'] = "Ingrese el Valor de la Cuota: "
+    
+    # Redirecciona cual de la opciones de mulacion para llamar la funcion
+    def decidir(self):
+        if self.Cliketd.get() == "Simulacion por Amortizacion":
+            self.generarSimulacionAmortizacion()
+        elif self.Cliketd.get() == "Simulacion por Capitalizacion":
+            self.generarSimulacionCapitalizacion()
+    
     def cancelar(self):
         self.window1.destroy()
     
-    def generarSimulacion(self):
-        calculo = TableAmortizacion(self.cuota.get(), self.tasa.get(), self.plazo.get())
-        lista = calculo.calcular()
-        cantidad = len(lista)
-        for i in range(0,cantidad):
-            self.table.insert("", 'end', values = (lista[i][0], lista[i][1], lista[i][2], lista[i][3], lista[i][4]))
-            
+    def generarSimulacionAmortizacion(self):
+        if self.EntryNperiodos.get() == "" or self.EntryvalorCuota.get() == "" or self.EntryTasaInteres == "":
+            alerta = Alert()
+        else:
+            calculo = TableAmortizacion(self.cuota.get(), self.tasa.get(), self.plazo.get())
+            lista = calculo.calcular()
+            cantidad = len(lista)
+            for i in range(0,cantidad):
+                self.table.insert("", 'end', values = (lista[i][0], lista[i][1], lista[i][2], lista[i][3], lista[i][4]))
+    
+    def generarSimulacionCapitalizacion(self): 
+        if self.EntryNperiodos.get() == "" or self.EntryvalorCuota.get() == "" or self.EntryTasaInteres == "":
+            alerta = Alert()
+        else:
+            capitalizacion = TablaCapitalizacion(self.cuota.get(), self.tasa.get(), self.plazo.get())
+            lista = capitalizacion.calcularCapitalizacion()
+            cantidad = len(lista)
+            for i in range(0,cantidad):
+                self.table.insert("", 'end', values = (lista[i][0], lista[i][1], lista[i][2], lista[i][3], lista[i][4]))
+    
+    def llamado(self):
+        window = ValorPresente()
+
+
 # Terminar de Programar 
-    # Tabla de Capitalizacion
     # Valor Final
     # Tiempo
-    # Valor Presente
     # Interes
     # Tasa de Interes
