@@ -4,7 +4,13 @@ from tkinter import ttk
 from alerta import Alert
 from LogicaAmortizacion import TableAmortizacion
 from LogicaCapitalizacion import TablaCapitalizacion
-from subventanas import ValorPresente
+from valorPresente import ValorPresente
+from valorFinal import ValorFinal
+from tasaInteres import TasaInteres
+from numeroPeriodos import NumeroPeriodos
+from vpAnualidadV import VpAnualidadV
+from vfAnualidadV import VfAnualidadV
+from inAnualidadV import InAnualidadV
 
 class Aplication():
 
@@ -13,7 +19,7 @@ class Aplication():
         # Config Main Window GUI
         self.window1 = tk.Tk()
         self.window1.title("Ingenieria economica")
-        self.window1.geometry('800x615')
+        self.window1.geometry('655x615')
         self.window1.resizable(0,0) 
         self.window1.eval('tk::PlaceWindow . center')
         
@@ -67,15 +73,13 @@ class Aplication():
         self.table.column("Saldo", width = "130", stretch = False)
         
         # Ver Valores Finales
-        self.valorPresente = tk.Button(self.wrapper2, text = "> Calcular Valor Presente" , width = 20, command = self.llamado)
-        self.valorFinal = tk.Button(self.wrapper2, text = "> Calcular Valor Final", width = 20)
-        self.Caltasa = tk.Button(self.wrapper2, text = "> Calcular Tasa de Interes", width = 20)
-        self.numeroPeriodos = tk.Button(self.wrapper2, text = "> Calcular Numero de Periodos", width = 25)
-        self.gradienteCreciente = tk.Button(self.wrapper2, text = "> Calcular Gradiente Creciente", width = 25)
-        self.gradienteDecreciente = tk.Button(self.wrapper2, text = "> Calcular Gradiente Decreciente", width = 25)
-        self.vpresenteAnualidadV = tk.Button(self.wrapper2, text = "> Calcular Valor Presente Anualidad Vencida", width = 35, justify = "center")
-        self.vfinalAnualidadV = tk.Button(self.wrapper2, text = "> Calcular Valor Final Anualidad Vencida", width = 35,  justify = "left")
-        self.interesGAnualidad = tk.Button(self.wrapper2, text = "> Calcular Anualidad Vencida Interes Global", width = 35)
+        self.valorPresente = tk.Button(self.wrapper2, text = "> Calcular Valor Presente" , width = 20, command = self.callValorPresente)
+        self.valorFinal = tk.Button(self.wrapper2, text = "> Calcular Valor Final", width = 20, command = self.callValorFinal)
+        self.Caltasa = tk.Button(self.wrapper2, text = "> Calcular Tasa de Interes", width = 20, command = self.callTasaInteres)
+        self.numeroPeriodos = tk.Button(self.wrapper2, text = "> Calcular Numero de Periodos", width = 25, command = self.callNperiodos)
+        self.vpresenteAnualidadV = tk.Button(self.wrapper2, text = "> Calcular Valor Presente Anualidad Vencida", width = 35, justify = "center", command = self.callVpAnualidadV)
+        self.vfinalAnualidadV = tk.Button(self.wrapper2, text = "> Calcular Valor Final Anualidad Vencida", width = 35,  justify = "left", command = self.callVfAnualidadV)
+        self.interesGAnualidad = tk.Button(self.wrapper2, text = "> Calcular Anualidad Vencida Interes Global", width = 35, command = self.callAnualidadVIn)
 
         # Posicition and Config dimension LabelFrame
         self.wrapper.pack(padx = 10, pady = 5, fill = "both")
@@ -101,12 +105,10 @@ class Aplication():
         self.valorPresente.grid(column = 0, row =6, padx = 5, pady = 5)
         self.valorFinal.grid(column = 0, row = 7, padx = 5, pady = 5)
         self.Caltasa.grid(column = 0, row = 8, padx = 5, pady = 5)
-        self.numeroPeriodos.grid(column = 1, row = 6, padx = 5, pady = 5)
-        self.gradienteCreciente.grid(column = 1, row = 8, padx = 5, pady = 5)
-        self.gradienteDecreciente.grid(column = 1, row = 7, padx = 5, pady = 5)
-        self.vpresenteAnualidadV.grid(column = 2, row = 6, padx = 5, pady = 5)
-        self.vfinalAnualidadV.grid(column = 2, row = 7, padx = 5, pady = 5)
-        self.interesGAnualidad.grid(column = 2, row = 8, padx = 5, pady = 5)
+        self.numeroPeriodos.grid(column = 2, row = 6, padx = 5, pady = 5)
+        self.vpresenteAnualidadV.grid(column = 1, row = 8, padx = 5, pady = 5)
+        self.vfinalAnualidadV.grid(column = 1, row = 7, padx = 5, pady = 5)
+        self.interesGAnualidad.grid(column = 1, row = 6, padx = 5, pady = 5)
         
         # Grid Position Formad table
         self.table.grid(column =0 , columnspan = 2,row = 6, padx = 5, pady = 5)
@@ -129,6 +131,7 @@ class Aplication():
                 self.valorCuota['text'] = "Ingrese el Valor Final: "
             else:
                 self.valorCuota['text'] = "Ingrese el Valor de la Cuota: "
+                
     
     # Redirecciona cual de la opciones de mulacion para llamar la funcion
     def decidir(self):
@@ -160,12 +163,32 @@ class Aplication():
             for i in range(0,cantidad):
                 self.table.insert("", 'end', values = (lista[i][0], lista[i][1], lista[i][2], lista[i][3], lista[i][4]))
     
-    def llamado(self):
+    def callValorPresente(self):
         window = ValorPresente()
+        
+    
+    def callValorFinal(self):
+        window = ValorFinal()
+        
+    
+    def callTasaInteres(self):
+        window = TasaInteres()
+        
+    
+    def callNperiodos(self):
+        window = NumeroPeriodos()
 
+    def callAnualidadVIn(self):
+        window = InAnualidadV()
+
+    def callVfAnualidadV(self):
+        window = VfAnualidadV()
+    
+    def callVpAnualidadV(self):
+        window = VpAnualidadV()
 
 # Terminar de Programar 
-    # Valor Final
+
     # Tiempo
     # Interes
     # Tasa de Interes

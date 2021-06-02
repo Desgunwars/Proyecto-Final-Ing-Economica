@@ -1,4 +1,5 @@
 import tkinter as tk
+import numpy_financial as npf
 import math
 from alerta import Alert
 
@@ -43,7 +44,7 @@ class ValorPresente(object):
 
         # Buttons
         self.calcularValorFInal = tk.Button(
-            self.wrapper, text="Calcular Valor Final", width=25, command=self.CalcularVp)
+            self.wrapper, text="Calcular Valor Presente", width=25, command=self.CalcularVp)
         self.atras = tk.Button(self.wrapper, text="Atras",
                                 width=10, command=self.Cerrar)
 
@@ -69,10 +70,9 @@ class ValorPresente(object):
         else:
             valorfinal = float(self.vf.get())
             tasainteres = float(self.i.get())
-            nperiodos = int(self.n.get())
-            multi = nperiodos * tasainteres 
-            resultado = ((valorfinal/(1 + multi)))
-            self.vp.set((valorfinal/(1 + multi)))
+            nperiodos = float(self.n.get())
+            multi = (valorfinal /(1 + tasainteres * nperiodos))
+            self.vp.set(str(multi) + "$")
 
     def Cerrar(self):
         self.newWindow.destroy()
