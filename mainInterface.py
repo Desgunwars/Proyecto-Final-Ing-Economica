@@ -59,19 +59,19 @@ class Aplication():
         self.atras = tk.Button(self.wrapper, text = "Cerrar" ,command = self.cancelar)
         
         # Format tabl
-        self.tableColumn = ["n", "Cuota", "Interes", "Acumulado", "Saldo"]
+        self.tableColumn = ["n", "Pago", "Abono Capital", "Intereses", "Saldo"]
         self.table = ttk.Treeview(self.wrapper1, columns = self.tableColumn, show = "headings", height =10)
         self.table.heading("n", text = "n", anchor = "center")
-        self.table.heading("Cuota", text = "Cuota", anchor = "center")
-        self.table.heading("Interes", text = "Interes", anchor = "center")
-        self.table.heading("Acumulado", text = "Acumulado", anchor = "center")
+        self.table.heading("Pago", text = "Cuota", anchor = "center")
+        self.table.heading("Abono Capital", text = "Interes", anchor = "center")
+        self.table.heading("Intereses", text = "Acumulado", anchor = "center")
         self.table.heading("Saldo", text = "Saldo", anchor = "center")
         
         # Tamaño de las columnas
         self.table.column("n", width = "100", stretch = False)
-        self.table.column("Cuota", width = "130",  stretch = False)
-        self.table.column("Interes", width = "130",  stretch = False)
-        self.table.column("Acumulado", width = "130",  stretch = False)
+        self.table.column("Pago", width = "130",  stretch = False)
+        self.table.column("Abono Capital", width = "130",  stretch = False)
+        self.table.column("Intereses", width = "130",  stretch = False)
         self.table.column("Saldo", width = "130", stretch = False)
         
         # Ver Valores Finales
