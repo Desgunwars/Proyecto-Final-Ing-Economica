@@ -6,7 +6,7 @@ class GradienteDecreciente(object):
     def __init__(self):
         super().__init__()
         self.newWindow = tk.Toplevel()
-        self.newWindow.title = "Gradiente Creciente"
+        self.newWindow.title = "Gradiente Decreciente"
         self.newWindow.geometry('500x290')
         self.newWindow.resizable(0, 0)
 
